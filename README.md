@@ -22,7 +22,7 @@ The system consists of:
 Problem Statement
 Community members may experience barriers when reporting incidents through traditional reporting channels.
 
-SafeZone SA provides a centralised digital platform where users can submit incidents, track their reports and allow authorised personnel to manage reported incidents.
+SafeZone SA provides a centralized digital platform where users can submit incidents, track their reports and allow authorized personnel to manage reported incidents.
 
 Main Features
 
