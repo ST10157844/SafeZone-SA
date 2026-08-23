@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.SafeZoneSA" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="colorPrimary">@color/sz_accent</item>
+        <item name="colorOnPrimary">@color/sz_bg</item>
+        <item name="colorPrimaryContainer">@color/sz_shield</item>
+        <item name="colorSurface">@color/sz_surface</item>
+        <item name="colorOnSurface">@color/sz_text</item>
+        <item name="android:windowBackground">@color/sz_bg</item>
+        <item name="android:statusBarColor">@color/sz_bg</item>
+        <item name="android:navigationBarColor">@color/sz_surface</item>
+        <item name="android:textColorPrimary">@color/sz_text</item>
+        <item name="android:textColorHint">@color/sz_muted</item>
+        <item name="editTextStyle">@style/Widget.SafeZone.TextInput</item>
+    </style>
+
+    <style name="Widget.SafeZone.TextInput" parent="Widget.AppCompat.EditText">
+        <item name="android:background">@drawable/bg_input</item>
+        <item name="android:textColor">@color/sz_text</item>
+        <item name="android:textColorHint">@color/sz_muted</item>
+        <item name="android:padding">14dp</item>
+    </style>
+
+    <style name="Widget.SafeZone.Button.Primary" parent="Widget.Material3.Button">
+        <item name="android:background">@drawable/bg_button_primary</item>
+        <item name="android:textColor">@color/sz_bg</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:paddingTop">14dp</item>
+        <item name="android:paddingBottom">14dp</item>
+        <item name="backgroundTint">@null</item>
+        <item name="android:letterSpacing">0.04</item>
+    </style>
+
+    <style name="Widget.SafeZone.Button.Secondary" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:background">@drawable/bg_button_secondary</item>
+        <item name="android:textColor">@color/sz_muted</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:paddingTop">14dp</item>
+        <item name="android:paddingBottom">14dp</item>
+        <item name="backgroundTint">@null</item>
+        <item name="strokeColor">@null</item>
+    </style>
+
+    <style name="Theme.SafeZoneSA.Splash">
+        <item name="android:windowBackground">@color/sz_bg</item>
+        <item name="android:statusBarColor">@color/sz_bg</item>
+        <item name="android:navigationBarColor">@color/sz_bg</item>
+    </style>
+</resources>

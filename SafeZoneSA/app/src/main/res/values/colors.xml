@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="sz_bg">#0A0F1E</color>
+    <color name="sz_surface">#111827</color>
+    <color name="sz_card">#161E2E</color>
+    <color name="sz_border">#1E2D45</color>
+    <color name="sz_accent">#00C2FF</color>
+    <color name="sz_accent_dim">#0087B3</color>
+    <color name="sz_danger">#FF4757</color>
+    <color name="sz_success">#00D68F</color>
+    <color name="sz_warn">#FFAA00</color>
+    <color name="sz_text">#E8F0FE</color>
+    <color name="sz_muted">#6B7A99</color>
+    <color name="sz_shield">#1A3A5C</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="black">#FF000000</color>
+</resources>

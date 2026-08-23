@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SafeZone SA</string>
+    <string name="tagline">Community Safety Platform</string>
+    <string name="login">Sign In</string>
+    <string name="register">Create Account</string>
+    <string name="logout">Logout</string>
+    <string name="back">Back</string>
+    <string name="submit">Submit Report</string>
+    <string name="email_hint">Email address</string>
+    <string name="password_hint">Password</string>
+    <string name="full_name_hint">Full Name</string>
+    <string name="phone_hint">Phone Number</string>
+    <string name="incident_type_hint">Incident Type</string>
+    <string name="description_hint">Describe what happened…</string>
+    <string name="location_hint">Street address or area</string>
+</resources>

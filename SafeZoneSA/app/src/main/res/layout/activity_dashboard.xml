@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/sz_bg">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <!-- Top Bar -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="GOOD MORNING"
+                    android:textColor="@color/sz_muted"
+                    android:textSize="11sp"
+                    android:letterSpacing="0.08"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SafeZone User"
+                    android:textColor="@color/sz_text"
+                    android:textSize="20sp"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+            <Button
+                android:id="@+id/btnLogout"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="Logout"
+                android:textColor="@color/sz_muted"
+                android:textSize="12sp"
+                android:background="@drawable/bg_card"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"/>
+        </LinearLayout>
+
+        <!-- Alert Banner -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_alert_banner"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="12dp"
+            android:layout_marginBottom="16dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="⚠  3 ACTIVE INCIDENTS NEARBY"
+                android:textColor="@color/sz_danger"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.04"/>
+        </LinearLayout>
+
+        <!-- Stats -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TODAY'S OVERVIEW"
+            android:textColor="@color/sz_muted"
+            android:textSize="11sp"
+            android:letterSpacing="0.08"
+            android:layout_marginBottom="10dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="20dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/bg_stat_card"
+                android:orientation="vertical"
+                android:padding="14dp"
+                android:layout_marginEnd="6dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="12" android:textColor="@color/sz_accent" android:textSize="26sp" android:textStyle="bold"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="REPORTS TODAY" android:textColor="@color/sz_muted" android:textSize="10sp" android:letterSpacing="0.06"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/bg_stat_card"
+                android:orientation="vertical"
+                android:padding="14dp"
+                android:layout_marginStart="6dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="47" android:textColor="@color/sz_success" android:textSize="26sp" android:textStyle="bold"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="RESOLVED" android:textColor="@color/sz_muted" android:textSize="10sp" android:letterSpacing="0.06"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Quick Actions -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="QUICK ACTIONS"
+            android:textColor="@color/sz_muted"
+            android:textSize="11sp"
+            android:letterSpacing="0.08"
+            android:layout_marginBottom="10dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="20dp">
+
+            <LinearLayout
+                android:id="@+id/cardSubmit"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_action_primary"
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:layout_marginEnd="8dp"
+                android:clickable="true"
+                android:focusable="true">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="⚠" android:textColor="@color/sz_accent" android:textSize="24sp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="Report Incident"
+                    android:textColor="@color/sz_text" android:textSize="14sp" android:textStyle="bold"
+                    android:layout_marginTop="8dp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="Submit a new report"
+                    android:textColor="@color/sz_muted" android:textSize="11sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/cardView"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_card"
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:layout_marginStart="8dp"
+                android:clickable="true"
+                android:focusable="true">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="☰" android:textColor="@color/sz_warn" android:textSize="24sp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="My Reports"
+                    android:textColor="@color/sz_text" android:textSize="14sp" android:textStyle="bold"
+                    android:layout_marginTop="8dp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="View your incidents"
+                    android:textColor="@color/sz_muted" android:textSize="11sp"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Recent activity header -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="RECENT COMMUNITY ACTIVITY"
+            android:textColor="@color/sz_muted"
+            android:textSize="11sp"
+            android:letterSpacing="0.08"
+            android:layout_marginBottom="10dp"/>
+
+        <!-- Incident card 1 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_card"
+            android:orientation="vertical"
+            android:padding="14dp"
+            android:layout_marginBottom="10dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="6dp">
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                    android:text="Robbery" android:textColor="@color/sz_text" android:textSize="13sp" android:textStyle="bold"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="Under Review" android:textColor="@color/sz_warn" android:textSize="11sp"
+                    android:background="@drawable/bg_badge_review" android:paddingStart="10dp"
+                    android:paddingEnd="10dp" android:paddingTop="3dp" android:paddingBottom="3dp"/>
+            </LinearLayout>
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="Armed robbery at corner shop on Main St." android:textColor="@color/sz_muted" android:textSize="12sp"/>
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="2 hrs ago" android:textColor="@color/sz_muted" android:textSize="11sp" android:layout_marginTop="6dp"/>
+        </LinearLayout>
+
+        <!-- Incident card 2 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_card"
+            android:orientation="vertical"
+            android:padding="14dp"
+            android:layout_marginBottom="10dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="6dp">
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                    android:text="Suspicious Activity" android:textColor="@color/sz_text" android:textSize="13sp" android:textStyle="bold"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="Investigating" android:textColor="@color/sz_accent" android:textSize="11sp"
+                    android:background="@drawable/bg_badge_investigating" android:paddingStart="10dp"
+                    android:paddingEnd="10dp" android:paddingTop="3dp" android:paddingBottom="3dp"/>
+            </LinearLayout>
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="Unknown individuals casing vehicles on Oak Ave." android:textColor="@color/sz_muted" android:textSize="12sp"/>
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="3 hrs ago" android:textColor="@color/sz_muted" android:textSize="11sp" android:layout_marginTop="6dp"/>
+        </LinearLayout>
+
+        <!-- Incident card 3 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_card"
+            android:orientation="vertical"
+            android:padding="14dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="6dp">
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                    android:text="Vandalism" android:textColor="@color/sz_text" android:textSize="13sp" android:textStyle="bold"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="Resolved" android:textColor="@color/sz_success" android:textSize="11sp"
+                    android:background="@drawable/bg_badge_resolved" android:paddingStart="10dp"
+                    android:paddingEnd="10dp" android:paddingTop="3dp" android:paddingBottom="3dp"/>
+            </LinearLayout>
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="Graffiti on park walls near school entrance." android:textColor="@color/sz_muted" android:textSize="12sp"/>
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="1 day ago" android:textColor="@color/sz_muted" android:textSize="11sp" android:layout_marginTop="6dp"/>
+        </LinearLayout>
+
+        <Space android:layout_width="0dp" android:layout_height="20dp"/>
+
+    </LinearLayout>
+</ScrollView>
