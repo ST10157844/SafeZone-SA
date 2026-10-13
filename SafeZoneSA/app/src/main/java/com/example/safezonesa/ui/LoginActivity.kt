@@ -19,6 +19,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var btnLogin: Button
     private lateinit var btnRegister: Button
     private lateinit var tvError: TextView
+    private lateinit var tvForgotPassword: TextView
 
     private lateinit var auth: FirebaseAuth
 
@@ -26,23 +27,20 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        // Initialise Firebase Authentication
         auth = FirebaseAuth.getInstance()
 
-        // Connect Kotlin variables to XML controls
         edtEmail = findViewById(R.id.edtEmail)
         edtPassword = findViewById(R.id.edtPassword)
         btnLogin = findViewById(R.id.btnLogin)
         btnRegister = findViewById(R.id.btnRegister)
         tvError = findViewById(R.id.tvError)
+        tvForgotPassword = findViewById(R.id.tvForgotPassword)
 
-        // Login button
         btnLogin.setOnClickListener {
 
             val email = edtEmail.text.toString().trim()
             val password = edtPassword.text.toString()
 
-            // Hide previous error
             tvError.visibility = View.GONE
 
             when {
@@ -73,7 +71,6 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-        // Open registration screen
         btnRegister.setOnClickListener {
 
             startActivity(
@@ -82,11 +79,32 @@ class LoginActivity : AppCompatActivity() {
                     RegisterActivity::class.java
                 )
             )
+        }
 
-            overridePendingTransition(
-                android.R.anim.slide_in_left,
-                android.R.anim.slide_out_right
-            )
+        tvForgotPassword.setOnClickListener {
+
+            val email = edtEmail.text.toString().trim()
+
+            tvError.visibility = View.GONE
+
+            when {
+
+                email.isEmpty() -> {
+                    showError(
+                        "Enter your email address first, then tap Forgot Password."
+                    )
+                    edtEmail.requestFocus()
+                }
+
+                !Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
+                    showError("Please enter a valid email address.")
+                    edtEmail.requestFocus()
+                }
+
+                else -> {
+                    sendPasswordReset(email)
+                }
+            }
         }
     }
 
@@ -98,8 +116,6 @@ class LoginActivity : AppCompatActivity() {
         btnLogin.isEnabled = false
         btnRegister.isEnabled = false
         btnLogin.text = "Signing in..."
-
-        tvError.visibility = View.GONE
 
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
@@ -118,18 +134,11 @@ class LoginActivity : AppCompatActivity() {
                             DashboardActivity::class.java
                         )
 
-                    // Prevent Back button from returning
-                    // to the login screen after successful login
                     intent.flags =
                         Intent.FLAG_ACTIVITY_NEW_TASK or
                                 Intent.FLAG_ACTIVITY_CLEAR_TASK
 
                     startActivity(intent)
-
-                    overridePendingTransition(
-                        android.R.anim.fade_in,
-                        android.R.anim.fade_out
-                    )
 
                 } else {
 
@@ -140,6 +149,53 @@ class LoginActivity : AppCompatActivity() {
                     showError(
                         "Incorrect email or password. Please try again."
                     )
+                }
+            }
+    }
+
+    private fun sendPasswordReset(email: String) {
+
+        tvForgotPassword.isEnabled = false
+        tvForgotPassword.text = "Sending..."
+
+        Toast.makeText(
+            this,
+            "Sending reset email...",
+            Toast.LENGTH_SHORT
+        ).show()
+
+        auth.sendPasswordResetEmail(email)
+            .addOnCompleteListener(this) { task ->
+
+                tvForgotPassword.isEnabled = true
+                tvForgotPassword.text = "Forgot Password?"
+
+                if (task.isSuccessful) {
+
+                    Toast.makeText(
+                        this,
+                        "Password reset email sent. Check your inbox.",
+                        Toast.LENGTH_LONG
+                    ).show()
+
+                    tvError.text =
+                        "Password reset email sent. Check your inbox."
+
+                    tvError.visibility = View.VISIBLE
+
+                } else {
+
+                    val message =
+                        task.exception?.localizedMessage
+                            ?: "Unable to send password reset email."
+
+                    showError(message)
+
+                    Toast.makeText(
+                        this,
+                        message,
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
     }
