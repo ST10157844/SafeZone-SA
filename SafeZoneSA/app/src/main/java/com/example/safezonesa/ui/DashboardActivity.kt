@@ -35,6 +35,9 @@ class DashboardActivity : AppCompatActivity() {
         val cardView =
             findViewById<LinearLayout>(R.id.cardView)
 
+        val cardSettings =
+            findViewById<LinearLayout>(R.id.cardSettings)
+
         val btnLogout =
             findViewById<Button>(R.id.btnLogout)
 
@@ -61,6 +64,20 @@ class DashboardActivity : AppCompatActivity() {
                 Intent(
                     this,
                     MyIncidentsActivity::class.java
+                )
+            )
+
+            overridePendingTransition(
+                android.R.anim.slide_in_left,
+                android.R.anim.slide_out_right
+            )
+        }
+        cardSettings.setOnClickListener {
+
+            startActivity(
+                Intent(
+                    this,
+                    SettingsActivity::class.java
                 )
             )
 
