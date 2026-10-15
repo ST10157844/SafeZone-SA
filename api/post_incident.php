@@ -33,22 +33,34 @@ $anonymous =
     (bool)($data['anonymous'] ?? false);
 
 
-if (
-    $firebaseUid === '' ||
-    $type === '' ||
-    $description === '' ||
-    $location === ''
-) {
+$missingFields = [];
+
+if ($firebaseUid === '') {
+    $missingFields[] = 'firebaseUid';
+}
+
+if ($type === '') {
+    $missingFields[] = 'type';
+}
+
+if ($description === '') {
+    $missingFields[] = 'description';
+}
+
+if ($location === '') {
+    $missingFields[] = 'location';
+}
+
+if (!empty($missingFields)) {
 
     json_response([
         'success' => false,
-        'message' =>
-            'Type, description and location are required.'
+        'message' => 'Required fields are missing.',
+        'missingFields' => $missingFields
     ], 422);
 }
 
-
-if (mb_strlen($description) < 10) {
+if (strlen($description) < 10) {
 
     json_response([
         'success' => false,
@@ -58,7 +70,7 @@ if (mb_strlen($description) < 10) {
 }
 
 
-if (mb_strlen($description) > 500) {
+if (strlen($description) > 500) {
 
     json_response([
         'success' => false,
