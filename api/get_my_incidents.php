@@ -53,15 +53,22 @@ try {
 
     $stmt = db()->prepare($sql);
 
-    $stmt->execute([
-        ':firebase_uid' => $firebaseUid
-    ]);
+$stmt->execute([
+    ':firebase_uid' => $firebaseUid
+]);
 
-    $incidents =
-        $stmt->fetchAll();
+$incidents =
+    $stmt->fetchAll();
 
-    json_response($incidents);
+foreach ($incidents as &$incident) {
 
+    $incident['anonymous'] =
+        (bool)((int)$incident['anonymous']);
+}
+
+unset($incident);
+
+json_response($incidents);
 } catch (Throwable $e) {
 
     json_response([
