@@ -1,33 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/sz_bg"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/sz_bg">
 
-    <!-- Top Bar -->
+    <!-- Header -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="72dp"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:padding="20dp"
-        android:background="@color/sz_surface">
-        <Button
-            android:id="@+id/btnBack"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:text="‹"
-            android:textColor="@color/sz_muted"
-            android:textSize="22sp"
-            android:background="@drawable/bg_card"
-            android:padding="0dp"
-            android:layout_marginEnd="12dp"/>
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:background="@drawable/bg_card">
+
+        <TextView
+            android:id="@+id/btnBackReports"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:gravity="center"
+            android:text="←"
+            android:textSize="23sp"
+            android:textColor="@color/sz_text"
+            android:clickable="true"
+            android:focusable="true"/>
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginStart="8dp">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -35,21 +42,52 @@
                 android:textColor="@color/sz_text"
                 android:textSize="18sp"
                 android:textStyle="bold"/>
+
             <TextView
+                android:id="@+id/tvReportsSubtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Your submitted incidents"
+                android:text="Loading your submitted incidents..."
                 android:textColor="@color/sz_muted"
-                android:textSize="12sp"/>
+                android:textSize="11sp"/>
+
         </LinearLayout>
+
     </LinearLayout>
 
+
+    <!-- Progress -->
+    <ProgressBar
+        android:id="@+id/progressReports"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="32dp"/>
+
+
+    <!-- Empty / Error Message -->
+    <TextView
+        android:id="@+id/tvEmptyReports"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No incident reports found."
+        android:textColor="@color/sz_muted"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:padding="24dp"
+        android:visibility="gone"/>
+
+
+    <!-- Live Incident List -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerIncidents"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="16dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="14dp"
+        android:paddingBottom="24dp"
         android:clipToPadding="false"/>
 
 </LinearLayout>

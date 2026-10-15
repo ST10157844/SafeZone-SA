@@ -6,6 +6,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.safezonesa.R
+import com.example.safezonesa.network.UserSyncManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
@@ -26,19 +27,18 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-        // Initialise Firebase Authentication
         auth = FirebaseAuth.getInstance()
 
-        // Connect Kotlin variables to XML controls
         edtName = findViewById(R.id.edtName)
         edtEmail = findViewById(R.id.edtEmail)
         edtPhone = findViewById(R.id.edtPhone)
         edtPassword = findViewById(R.id.edtPassword)
+
         btnRegister = findViewById(R.id.btnRegister)
         btnBack = findViewById(R.id.btnBack)
 
-        // Back button
         btnBack.setOnClickListener {
+
             finish()
 
             overridePendingTransition(
@@ -47,23 +47,35 @@ class RegisterActivity : AppCompatActivity() {
             )
         }
 
-        // Register button
         btnRegister.setOnClickListener {
 
-            val name = edtName.text.toString().trim()
-            val email = edtEmail.text.toString().trim()
-            val phone = edtPhone.text.toString().trim()
-            val password = edtPassword.text.toString()
+            val name =
+                edtName.text.toString().trim()
+
+            val email =
+                edtEmail.text.toString().trim()
+
+            val phone =
+                edtPhone.text.toString().trim()
+
+            val password =
+                edtPassword.text.toString()
 
             when {
 
                 name.isEmpty() -> {
-                    edtName.error = "Full name is required"
+
+                    edtName.error =
+                        "Full name is required"
+
                     edtName.requestFocus()
                 }
 
                 email.isEmpty() -> {
-                    edtEmail.error = "Email is required"
+
+                    edtEmail.error =
+                        "Email is required"
+
                     edtEmail.requestFocus()
                 }
 
@@ -71,26 +83,38 @@ class RegisterActivity : AppCompatActivity() {
                     .matcher(email)
                     .matches() -> {
 
-                    edtEmail.error = "Enter a valid email address"
+                    edtEmail.error =
+                        "Enter a valid email address"
+
                     edtEmail.requestFocus()
                 }
 
                 phone.isEmpty() -> {
-                    edtPhone.error = "Phone number is required"
+
+                    edtPhone.error =
+                        "Phone number is required"
+
                     edtPhone.requestFocus()
                 }
 
                 phone.length < 10 -> {
-                    edtPhone.error = "Enter a valid phone number"
+
+                    edtPhone.error =
+                        "Enter a valid phone number"
+
                     edtPhone.requestFocus()
                 }
 
                 password.isEmpty() -> {
-                    edtPassword.error = "Password is required"
+
+                    edtPassword.error =
+                        "Password is required"
+
                     edtPassword.requestFocus()
                 }
 
                 password.length < 6 -> {
+
                     edtPassword.error =
                         "Password must be at least 6 characters"
 
@@ -98,10 +122,12 @@ class RegisterActivity : AppCompatActivity() {
                 }
 
                 else -> {
+
                     createFirebaseAccount(
-                        name,
-                        email,
-                        password
+                        name = name,
+                        email = email,
+                        phone = phone,
+                        password = password
                     )
                 }
             }
@@ -111,39 +137,66 @@ class RegisterActivity : AppCompatActivity() {
     private fun createFirebaseAccount(
         name: String,
         email: String,
+        phone: String,
         password: String
     ) {
 
-        // Prevent the user pressing Register many times
         btnRegister.isEnabled = false
         btnRegister.text = "Creating account..."
 
-        auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
+        auth.createUserWithEmailAndPassword(
+            email,
+            password
+        ).addOnCompleteListener(this) { task ->
 
-                if (task.isSuccessful) {
+            if (task.isSuccessful) {
 
-                    val user = auth.currentUser
+                val user = auth.currentUser
 
-                    // Store the user's full name in the Firebase profile
-                    val profileUpdates =
-                        UserProfileChangeRequest.Builder()
-                            .setDisplayName(name)
-                            .build()
+                if (user == null) {
 
-                    user?.updateProfile(profileUpdates)
-                        ?.addOnCompleteListener {
+                    resetRegisterButton()
+
+                    Toast.makeText(
+                        this,
+                        "Account created, but Firebase user could not be loaded.",
+                        Toast.LENGTH_LONG
+                    ).show()
+
+                    return@addOnCompleteListener
+                }
+
+                val profileUpdates =
+                    UserProfileChangeRequest.Builder()
+                        .setDisplayName(name)
+                        .build()
+
+                user.updateProfile(profileUpdates)
+                    .addOnCompleteListener { profileTask ->
+
+                        if (profileTask.isSuccessful) {
+
+                            syncUserWithSafeZoneDatabase(
+                                phone = phone
+                            )
+
+                        } else {
+
+                            /*
+                             * The Firebase account still exists even if
+                             * updating the display name fails.
+                             *
+                             * We allow the user to continue and the
+                             * account can be synchronized again at login.
+                             */
+
+                            auth.signOut()
 
                             Toast.makeText(
                                 this,
-                                "Account created successfully!",
+                                "Account created successfully. Please sign in.",
                                 Toast.LENGTH_LONG
                             ).show()
-
-                            // Firebase automatically signs in a newly
-                            // registered user. Sign out so that we can
-                            // properly test the Login screen next.
-                            auth.signOut()
 
                             finish()
 
@@ -152,41 +205,117 @@ class RegisterActivity : AppCompatActivity() {
                                 android.R.anim.fade_out
                             )
                         }
+                    }
 
-                } else {
+            } else {
 
-                    btnRegister.isEnabled = true
-                    btnRegister.text = "Register"
+                resetRegisterButton()
 
-                    when (val exception = task.exception) {
+                when (
+                    val exception = task.exception
+                ) {
 
-                        is FirebaseAuthUserCollisionException -> {
+                    is FirebaseAuthUserCollisionException -> {
 
-                            edtEmail.error =
-                                "An account already exists with this email"
+                        edtEmail.error =
+                            "An account already exists with this email"
 
-                            edtEmail.requestFocus()
-                        }
+                        edtEmail.requestFocus()
+                    }
 
-                        is FirebaseAuthWeakPasswordException -> {
+                    is FirebaseAuthWeakPasswordException -> {
 
-                            edtPassword.error =
-                                "Please choose a stronger password"
+                        edtPassword.error =
+                            "Please choose a stronger password"
 
-                            edtPassword.requestFocus()
-                        }
+                        edtPassword.requestFocus()
+                    }
 
-                        else -> {
+                    else -> {
 
-                            Toast.makeText(
-                                this,
-                                exception?.localizedMessage
-                                    ?: "Registration failed. Please try again.",
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
+                        Toast.makeText(
+                            this,
+                            exception?.localizedMessage
+                                ?: "Registration failed. Please try again.",
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
                 }
             }
+        }
+    }
+
+    private fun syncUserWithSafeZoneDatabase(
+        phone: String
+    ) {
+
+        val firebaseUser =
+            auth.currentUser
+
+        if (firebaseUser == null) {
+
+            resetRegisterButton()
+
+            Toast.makeText(
+                this,
+                "Unable to synchronize account.",
+                Toast.LENGTH_LONG
+            ).show()
+
+            return
+        }
+
+        btnRegister.text =
+            "Saving profile..."
+
+        UserSyncManager.syncFirebaseUser(
+            context = this,
+            user = firebaseUser,
+            phone = phone
+        ) { syncSuccessful ->
+
+            /*
+             * Firebase automatically signs the user in
+             * immediately after registration.
+             *
+             * We sign out so the Login screen can be tested
+             * normally.
+             */
+            auth.signOut()
+
+            if (syncSuccessful) {
+
+                Toast.makeText(
+                    this,
+                    "Account created and SafeZone profile saved successfully!",
+                    Toast.LENGTH_LONG
+                ).show()
+
+            } else {
+
+                /*
+                 * The Firebase account was still created.
+                 * Login synchronization will try again later.
+                 */
+                Toast.makeText(
+                    this,
+                    "Account created successfully. Profile will synchronize when you sign in.",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+
+            finish()
+
+            overridePendingTransition(
+                android.R.anim.fade_in,
+                android.R.anim.fade_out
+            )
+        }
+    }
+
+    private fun resetRegisterButton() {
+
+        btnRegister.isEnabled = true
+        btnRegister.text = "Register"
     }
 }

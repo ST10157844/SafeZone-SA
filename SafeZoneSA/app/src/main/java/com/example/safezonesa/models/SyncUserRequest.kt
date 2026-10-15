@@ -1,4 +1,8 @@
 package com.example.safezonesa.models
 
-class SyncUserRequest {
-}
+data class SyncUserRequest(
+    val firebaseUid: String,
+    val name: String,
+    val email: String,
+    val phone: String?
+)

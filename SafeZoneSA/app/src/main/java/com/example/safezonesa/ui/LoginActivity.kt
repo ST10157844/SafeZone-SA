@@ -29,6 +29,8 @@ import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 
+import com.example.safezonesa.network.UserSyncManager
+
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var edtEmail: EditText
@@ -145,21 +147,65 @@ class LoginActivity : AppCompatActivity() {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
 
+//                if (task.isSuccessful) {
+//
+//                    openDashboard()
+//
+//                } else {
+//
+//                    btnLogin.isEnabled = true
+//                    btnRegister.isEnabled = true
+//                    btnGoogleSignIn.isEnabled = true
+//                    btnLogin.text = "Login"
+//
+//                    showError(
+//                        "Incorrect email or password. Please try again."
+//                    )
+//                }
                 if (task.isSuccessful) {
+
+                    val firebaseUser =
+                        auth.currentUser
+
+                    if (firebaseUser != null) {
+
+                        UserSyncManager.syncFirebaseUser(
+                            context = this,
+                            user = firebaseUser
+                        ) { syncSuccessful ->
+
+                            if (syncSuccessful) {
+
+                                android.util.Log.d(
+                                    "SafeZoneLogin",
+                                    "User synchronized successfully"
+                                )
+
+                            } else {
+
+                                android.util.Log.w(
+                                    "SafeZoneLogin",
+                                    "Database synchronization failed"
+                                )
+                            }
+                        }
+                    }
 
                     openDashboard()
 
                 } else {
 
                     btnLogin.isEnabled = true
-                    btnRegister.isEnabled = true
-                    btnGoogleSignIn.isEnabled = true
-                    btnLogin.text = "Login"
+                    btnLogin.text = "Sign In"
 
-                    showError(
-                        "Incorrect email or password. Please try again."
-                    )
+                    tvError.visibility =
+                        android.view.View.VISIBLE
+
+                    tvError.text =
+                        task.exception?.localizedMessage
+                            ?: "Unable to sign in. Check your email and password."
                 }
+
             }
     }
 
@@ -292,24 +338,42 @@ class LoginActivity : AppCompatActivity() {
         )
             .addOnCompleteListener(this) { task ->
 
+//                if (task.isSuccessful) {
+//
+//                    Toast.makeText(
+//                        this,
+//                        "Google sign-in successful!",
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//
+//                    openDashboard()
+//
+//                } else {
+//
+//                    resetGoogleButton()
+//
+//                    showError(
+//                        task.exception?.localizedMessage
+//                            ?: "Google sign-in failed."
+//                    )
+//                }
                 if (task.isSuccessful) {
 
-                    Toast.makeText(
-                        this,
-                        "Google sign-in successful!",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    val firebaseUser =
+                        auth.currentUser
 
-                    openDashboard()
+                    if (firebaseUser != null) {
 
-                } else {
+                        UserSyncManager.syncFirebaseUser(
+                            this,
+                            firebaseUser
+                        ) {
+                            openDashboard()
+                        }
 
-                    resetGoogleButton()
-
-                    showError(
-                        task.exception?.localizedMessage
-                            ?: "Google sign-in failed."
-                    )
+                    } else {
+                        openDashboard()
+                    }
                 }
             }
     }
@@ -370,6 +434,7 @@ class LoginActivity : AppCompatActivity() {
             android.R.anim.fade_in,
             android.R.anim.fade_out
         )
+        finish()
     }
 
     private fun resetGoogleButton() {

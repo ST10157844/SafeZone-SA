@@ -1,4 +1,6 @@
 package com.example.safezonesa.models
 
-class SyncUserResponse {
-}
+data class SyncUserResponse(
+    val success: Boolean,
+    val message: String
+)

@@ -1,4 +1,7 @@
 package com.example.safezonesa.models
 
-class SubmitIncidentResponse {
-}
+data class SubmitIncidentResponse(
+    val success: Boolean,
+    val message: String,
+    val incidentID: Int?
+)
